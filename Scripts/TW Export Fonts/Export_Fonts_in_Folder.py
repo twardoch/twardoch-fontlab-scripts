@@ -8,8 +8,6 @@
 from __future__ import print_function, unicode_literals
 import os.path
 import os
-import re
-import datetime
 import fontlab as fl6
 import fontgate as fgt
 from PythonQt import QtCore, QtGui
@@ -17,8 +15,9 @@ from fontlab import *
 from glob import glob
 import tempfile
 import shutil
+from platform import system
 
-__version__ = '0.2'
+__version__ = '0.3'
 app_name = 'Export Fonts in Folder'
 
 ws = flWorkspace.instance()
@@ -65,7 +64,7 @@ class ExportFontsInFolder(object):
         else:
             self.qActRun(qAct)
 
-    def findFontsInFolder(self, inFolder = None):
+    def findFontsInFolder(self, inFolder = None, subfolders = False):
         if not inFolder:
             inFolder = self.srcFolder
         if not inFolder:
@@ -73,7 +72,8 @@ class ExportFontsInFolder(object):
         fontTypes = self.fontTypes + [t.upper() for t in self.fontTypes]
         for ext in fontTypes:
             self.srcPaths.extend(glob(os.path.join(inFolder, ext)))
-            self.srcPaths.extend(glob(os.path.join(inFolder, '**', ext)))
+            if subfolders:
+                self.srcPaths.extend(glob(os.path.join(inFolder, '**', ext)))
 
     def closeFont(self, pk = None, save = False):
         if not pk:
@@ -204,22 +204,27 @@ class dlg_exportFontsInFolder(QtGui.QDialog):
         self.lay_src.addWidget(self.lbl_src)
         self.edt_srcFolder = QtGui.QLineEdit()
         self.edt_srcFolder.setText(self.export.srcFolder)
-        self.edt_srcFolder.setToolTip('Will recursively find source files in this folder')
+        self.edt_srcFolder.setToolTip('<p>Finds fonts to be converted in this <b>Source folder</b>. Defaults to the same folder as the currently active font. Click ... to choose a different folder.</p>')
         self.lay_src.addWidget(self.edt_srcFolder)
-        self.btn_pickSrcFolder = QtGui.QPushButton('…')
+        self.btn_pickSrcFolder = QtGui.QPushButton('...')
+        self.btn_pickSrcFolder.setToolTip('<p>Click to choose a different <b>Source folder</b></p>')
         self.btn_pickSrcFolder.clicked.connect(self.pickSrcFolder)
         self.lay_src.addWidget(self.btn_pickSrcFolder)
         layoutV.addLayout(self.lay_src)
 
-        # Source folder
+        # Filtering
         self.lay_types = QtGui.QHBoxLayout()
         self.lbl_types = QtGui.QLabel('File types:')
         self.lbl_types.setFixedWidth(120)
         self.lay_types.addWidget(self.lbl_types)
         self.edt_types = QtGui.QLineEdit()
         self.edt_types.setText(" ".join(self.export.fontTypes))
-        self.edt_types.setToolTip('Space-separated filename patterns to find files in Source folder')
+        self.edt_types.setToolTip('<p>Finds fonts to be converted that match these space-separated <b>patterns</b> (case-insensitive).</p>')
         self.lay_types.addWidget(self.edt_types)
+        self.chk_subfolders = QtGui.QCheckBox('Subfolders')
+        self.chk_subfolders.setCheckState(QtCore.Qt.Unchecked)
+        self.chk_subfolders.setToolTip('<p>If <b>on</b>, finds fonts to be converted in the Source folder <b>recursively</b> (including subfolders).</p>')
+        self.lay_types.addWidget(self.chk_subfolders)
         layoutV.addLayout(self.lay_types)
 
         # Destination folder
@@ -229,33 +234,35 @@ class dlg_exportFontsInFolder(QtGui.QDialog):
         self.lay_dest.addWidget(self.lbl_dest)
         self.edt_destFolder = QtGui.QLineEdit()
         self.edt_destFolder.setText(self.export.destFolder)
-        self.edt_destFolder.setToolTip('Will place exported fonts in this folder, recreating the Source folder structure')
+        self.edt_destFolder.setToolTip('<p>Exports fonts into this folder. Recreates the Source folder <b>structure</b>. If a font exports as a single file, uses the original filename as the new filename. If a font exports as multiple files, uses the original filename as a subfolder name. Click ... to choose a different folder.</p>')
         self.lay_dest.addWidget(self.edt_destFolder)
-        self.btn_pickDestFolder = QtGui.QPushButton('…')
+        self.btn_pickDestFolder = QtGui.QPushButton('...')
+        self.btn_pickDestFolder.setToolTip('<p>Click to choose a different <b>Destination folder</b></p>')
         self.btn_pickDestFolder.clicked.connect(self.pickDestFolder)
         self.lay_dest.addWidget(self.btn_pickDestFolder)
         layoutV.addLayout(self.lay_dest)
 
         # Run layout
         self.lay_run = QtGui.QHBoxLayout()
-        self.lbl_format = QtGui.QLabel('Click <i>Export Fonts As</i>, choose <i>Content</i>, choose/customize <i>Profile</i>.<br /><b>Don’t</b> change <i>Destination</i> settings there. Click <i>Export</i>.')
-        self.lbl_format.setStyleSheet('font-size:10pt;')
+        self.lbl_format = QtGui.QLabel('<small>Hold your pointer over the UI items for instructions</small>')
+        self.lbl_format.setStyleSheet('color:darkGray;')
         self.lay_run.addWidget(self.lbl_format)
         self.lay_run.addStretch()
-        self.btn_cancel = QtGui.QPushButton('Cancel')
+        self.btn_cancel = QtGui.QPushButton('&Cancel')
         self.btn_cancel.clicked.connect(self.cancel)
         self.lay_run.addWidget(self.btn_cancel)
         self.btn_run = QtGui.QPushButton('&Export Fonts As')
         self.btn_run.setDefault(True)
         self.btn_run.setFocus()
         self.btn_run.clicked.connect(self.run)
+        self.btn_run.setToolTip('<p>Click this button. In the <i>Export Font</i> dialog, choose <b>Content</b>, choose/customize the <b>Profile</b>, but <b>do not change</b> the <b>Destination</b> settings there. Then click <b>Export</b> to start the conversion.</p>')
         self.lay_run.addWidget(self.btn_run)
         layoutV.addLayout(self.lay_run)
 
         # - Set Widget
         self.setLayout(layoutV)
         self.setWindowTitle('%s %s' %(app_name, __version__))
-        self.setGeometry(300, 300, 600, 200)
+        self.setGeometry(300, 300, 640, 200)
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint) # Always on top!!
         self.show()
 
@@ -271,7 +278,7 @@ class dlg_exportFontsInFolder(QtGui.QDialog):
             None, "Choose folder", self.edt_destFolder.text, QtGui.QFileDialog.ShowDirsOnly | QtGui.QFileDialog.DontResolveSymlinks))
 
     def exportFonts(self):
-        self.export.findFontsInFolder()
+        self.export.findFontsInFolder(subfolders = self.chk_subfolders.isChecked())
         if not os.path.isdir(self.export.destFolder):
             print('--- [ERROR] Cannot write to folder:')
             print (self.export.destFolder)
