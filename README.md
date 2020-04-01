@@ -8,7 +8,9 @@
 
 ## Installation
 
-1. Download and unzip [twardoch-fontlab-scripts-master.zip](https://github.com/twardoch/twardoch-fontlab-scripts/archive/master.zip). Then:
+### Download [twardoch-fontlab-scripts-master.zip](https://github.com/twardoch/twardoch-fontlab-scripts/archive/master.zip)
+
+1. Unzip the downloaded file.
 2. With Finder or File Explorer, go inside the `Script` subfolder that is inside the unzipped folder.
 3. In another Finder or File Explorer window, go to your FontLab 7 [user data folder](https://help.fontlab.com/fontlab/7/manual/Custom-data-files-and-locations/#user-data-folder). Unless you have picked a custom location in _Preferences > General > User data folder_, it’s:
    - on macOS: `~/Library/Application Support/FontLab/FontLab 7` where `~` is your home folder
