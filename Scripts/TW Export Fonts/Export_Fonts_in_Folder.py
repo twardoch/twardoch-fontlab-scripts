@@ -17,7 +17,7 @@ import tempfile
 import shutil
 from platform import system
 
-__version__ = '0.3'
+__version__ = '0.4'
 app_name = 'Export Fonts in Folder'
 
 ws = flWorkspace.instance()
@@ -129,7 +129,6 @@ class ExportFontsInFolder(object):
         if pref.exportDestinationFolder == self.tmp:
             self.qActRun(self.qActExportFont)
         self.closeFont(pk)
-        print(pref.exportDestinationFolder)
         exportedPaths = glob(os.path.join(self.tmp, '*.*'))
         if not len(exportedPaths) > 0:
             print('--- [ERROR] Cannot convert:')
