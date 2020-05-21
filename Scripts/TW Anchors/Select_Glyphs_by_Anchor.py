@@ -1,4 +1,4 @@
-#FLM: Find Glyphs by Anchor
+#FLM: Select Glyphs by Anchor
 # Python script for FontLab 7
 # By Adam Twardoch, 2020-05-20
 # Licensed at your choice under:
@@ -12,7 +12,7 @@ from typerig.proxy import pFont, pGlyph
 from fontlab import *
 
 app_version = '0.01'
-app_name = 'Find Glyphs by Anchor'
+app_name = 'Select Glyphs by Anchor'
 ws = flWorkspace.instance()
 
 def findAllAnchors(font):
