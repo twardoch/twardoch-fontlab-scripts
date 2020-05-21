@@ -22,18 +22,22 @@ app_name = 'Export Fonts in Folder'
 
 ws = flWorkspace.instance()
 main = ws.mainWindow
+app = QtGui.QApplication.instance()
 itm = flItems
 pref = flPreferences.instance()
+
 
 def getQAct(name):
     for wgt in main.children():
         if wgt.objectName == name:
             return wgt
 
+
 class ExportFontsInFolder(object):
 
     def __init__(self):
-        self.fontTypes = ['*.vfc', '*.vfj', '*.vfb', '*.otf', '*.ttf', '*.glyphs']
+        self.fontTypes = ['*.vfc', '*.vfj',
+                          '*.vfb', '*.otf', '*.ttf', '*.glyphs']
         self.srcFolder = pref.exportSaveFolder
         if len(ws.packages()):
             p = flPackage(CurrentFont()).path
@@ -64,7 +68,7 @@ class ExportFontsInFolder(object):
         else:
             self.qActRun(qAct)
 
-    def findFontsInFolder(self, inFolder = None, subfolders = False):
+    def findFontsInFolder(self, inFolder=None, subfolders=False):
         if not inFolder:
             inFolder = self.srcFolder
         if not inFolder:
@@ -75,7 +79,7 @@ class ExportFontsInFolder(object):
             if subfolders:
                 self.srcPaths.extend(glob(os.path.join(inFolder, '**', ext)))
 
-    def closeFont(self, pk = None, save = False):
+    def closeFont(self, pk=None, save=False):
         if not pk:
             pk = flPackage(CurrentFont())
         itm.notifyPackageClosed(pk)
@@ -104,13 +108,14 @@ class ExportFontsInFolder(object):
             print(path)
             return False
 
-    def convertFont(self, path = None):
+    def convertFont(self, path=None):
         if not path:
             return False
         if not self.destFormat:
             self.chooseFormat()
         relpath = path.replace(self.srcFolder, '')
-        exportpath = self.destFolder.rstrip(os.path.sep) + os.path.sep + relpath.lstrip(os.path.sep)
+        exportpath = self.destFolder.rstrip(
+            os.path.sep) + os.path.sep + relpath.lstrip(os.path.sep)
         exportfolder, exportfileext = os.path.split(exportpath)
         if not os.path.isdir(exportfolder):
             self.deletePath(exportfolder)
@@ -155,7 +160,7 @@ class ExportFontsInFolder(object):
         self.findFontsInFolder()
         if not os.path.isdir(self.destFolder):
             print('--- [ERROR] Cannot write to folder:')
-            print (self.destFolder)
+            print(self.destFolder)
             return
         for path in self.srcPaths:
             self.convertFont(path)
@@ -178,7 +183,8 @@ class ExportFontsInFolder(object):
         pk.addAxis(flAxis('weight', 'wght', 'wt'))
         pk.addMaster('Light', False, pk, None, False, False)
         pk.addMaster('Bold', False, pk, None, False, False)
-        for m in pk.masters[1:]: pk.addInstance(flInstance(m, m, pk.location(m)))
+        for m in pk.masters[1:]:
+            pk.addInstance(flInstance(m, m, pk.location(m)))
         self.qActRun(self.qActExportFontAs)
         exportedPaths = glob(os.path.join(self.tmp, '*.*'))
         if len(exportedPaths) > 0:
@@ -188,11 +194,19 @@ class ExportFontsInFolder(object):
         self.closeFont(pk)
         self.tmpDel()
 
+
 class dlg_exportFontsInFolder(QtGui.QDialog):
 
     def __init__(self):
         super(dlg_exportFontsInFolder, self).__init__()
         self.export = ExportFontsInFolder()
+
+        menu = QtGui.QMenu('MyMenu')
+        myact = QtGui.QAction('MyAction', self)
+        menu.addAction(myact)
+
+        menubar = main.menuBar()
+        menubar.addAction(myact)
 
         layoutV = QtGui.QVBoxLayout()
 
@@ -203,10 +217,12 @@ class dlg_exportFontsInFolder(QtGui.QDialog):
         self.lay_src.addWidget(self.lbl_src)
         self.edt_srcFolder = QtGui.QLineEdit()
         self.edt_srcFolder.setText(self.export.srcFolder)
-        self.edt_srcFolder.setToolTip('<p>Finds fonts to be converted in this <b>Source folder</b>. Defaults to the same folder as the currently active font. Click ... to choose a different folder.</p>')
+        self.edt_srcFolder.setToolTip(
+            '<p>Finds fonts to be converted in this <b>Source folder</b>. Defaults to the same folder as the currently active font. Click ... to choose a different folder.</p>')
         self.lay_src.addWidget(self.edt_srcFolder)
         self.btn_pickSrcFolder = QtGui.QPushButton('...')
-        self.btn_pickSrcFolder.setToolTip('<p>Click to choose a different <b>Source folder</b></p>')
+        self.btn_pickSrcFolder.setToolTip(
+            '<p>Click to choose a different <b>Source folder</b></p>')
         self.btn_pickSrcFolder.clicked.connect(self.pickSrcFolder)
         self.lay_src.addWidget(self.btn_pickSrcFolder)
         layoutV.addLayout(self.lay_src)
@@ -218,11 +234,13 @@ class dlg_exportFontsInFolder(QtGui.QDialog):
         self.lay_types.addWidget(self.lbl_types)
         self.edt_types = QtGui.QLineEdit()
         self.edt_types.setText(" ".join(self.export.fontTypes))
-        self.edt_types.setToolTip('<p>Finds fonts to be converted that match these space-separated <b>patterns</b> (case-insensitive).</p>')
+        self.edt_types.setToolTip(
+            '<p>Finds fonts to be converted that match these space-separated <b>patterns</b> (case-insensitive).</p>')
         self.lay_types.addWidget(self.edt_types)
         self.chk_subfolders = QtGui.QCheckBox('Subfolders')
         self.chk_subfolders.setCheckState(QtCore.Qt.Unchecked)
-        self.chk_subfolders.setToolTip('<p>If <b>on</b>, finds fonts to be converted in the Source folder <b>recursively</b> (including subfolders).</p>')
+        self.chk_subfolders.setToolTip(
+            '<p>If <b>on</b>, finds fonts to be converted in the Source folder <b>recursively</b> (including subfolders).</p>')
         self.lay_types.addWidget(self.chk_subfolders)
         layoutV.addLayout(self.lay_types)
 
@@ -233,17 +251,20 @@ class dlg_exportFontsInFolder(QtGui.QDialog):
         self.lay_dest.addWidget(self.lbl_dest)
         self.edt_destFolder = QtGui.QLineEdit()
         self.edt_destFolder.setText(self.export.destFolder)
-        self.edt_destFolder.setToolTip('<p>Exports fonts into this folder. Recreates the Source folder <b>structure</b>. If a font exports as a single file, uses the original filename as the new filename. If a font exports as multiple files, uses the original filename as a subfolder name. Click ... to choose a different folder.</p>')
+        self.edt_destFolder.setToolTip(
+            '<p>Exports fonts into this folder. Recreates the Source folder <b>structure</b>. If a font exports as a single file, uses the original filename as the new filename. If a font exports as multiple files, uses the original filename as a subfolder name. Click ... to choose a different folder.</p>')
         self.lay_dest.addWidget(self.edt_destFolder)
         self.btn_pickDestFolder = QtGui.QPushButton('...')
-        self.btn_pickDestFolder.setToolTip('<p>Click to choose a different <b>Destination folder</b></p>')
+        self.btn_pickDestFolder.setToolTip(
+            '<p>Click to choose a different <b>Destination folder</b></p>')
         self.btn_pickDestFolder.clicked.connect(self.pickDestFolder)
         self.lay_dest.addWidget(self.btn_pickDestFolder)
         layoutV.addLayout(self.lay_dest)
 
         # Run layout
         self.lay_run = QtGui.QHBoxLayout()
-        self.lbl_format = QtGui.QLabel('<small>Hold your pointer over the UI items for instructions</small>')
+        self.lbl_format = QtGui.QLabel(
+            '<small>Hold your pointer over the UI items for instructions</small>')
         self.lbl_format.setStyleSheet('color:darkGray;')
         self.lay_run.addWidget(self.lbl_format)
         self.lay_run.addStretch()
@@ -254,15 +275,16 @@ class dlg_exportFontsInFolder(QtGui.QDialog):
         self.btn_run.setDefault(True)
         self.btn_run.setFocus()
         self.btn_run.clicked.connect(self.run)
-        self.btn_run.setToolTip('<p>Click this button. In the <i>Export Font</i> dialog, choose <b>Content</b>, choose/customize the <b>Profile</b>, but <b>do not change</b> the <b>Destination</b> settings there. Then click <b>Export</b> to start the conversion.</p>')
+        self.btn_run.setToolTip(
+            '<p>Click this button. In the <i>Export Font</i> dialog, choose <b>Content</b>, choose/customize the <b>Profile</b>, but <b>do not change</b> the <b>Destination</b> settings there. Then click <b>Export</b> to start the conversion.</p>')
         self.lay_run.addWidget(self.btn_run)
         layoutV.addLayout(self.lay_run)
 
         # - Set Widget
         self.setLayout(layoutV)
-        self.setWindowTitle('%s %s' %(app_name, __version__))
+        self.setWindowTitle('%s %s' % (app_name, __version__))
         self.setGeometry(300, 300, 640, 200)
-        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint) # Always on top!!
+        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)  # Always on top!!
         self.show()
 
     def cancel(self):
@@ -277,10 +299,11 @@ class dlg_exportFontsInFolder(QtGui.QDialog):
             None, "Choose folder", self.edt_destFolder.text, QtGui.QFileDialog.ShowDirsOnly | QtGui.QFileDialog.DontResolveSymlinks))
 
     def exportFonts(self):
-        self.export.findFontsInFolder(subfolders = self.chk_subfolders.isChecked())
+        self.export.findFontsInFolder(
+            subfolders=self.chk_subfolders.isChecked())
         if not os.path.isdir(self.export.destFolder):
             print('--- [ERROR] Cannot write to folder:')
-            print (self.export.destFolder)
+            print(self.export.destFolder)
             return
         progressTotal = len(self.export.srcPaths)
         for pathi, path in enumerate(self.export.srcPaths):
@@ -302,4 +325,27 @@ class dlg_exportFontsInFolder(QtGui.QDialog):
             self.accept()
 
 # - RUN ------------------------------
+
+
+#
+#self.menu_data = QtGui.QMenu('Class Data', self)
+#act_data_open = QtGui.QAction('Open TypeRig Classes (JSON)', self)
+#act_data_save = QtGui.QAction('Save TypeRig Classes (JSON)', self)
+#act_data_import = QtGui.QAction('Import FontLab Classes (JSON)', self)
+#act_data_export = QtGui.QAction('Export FontLab Classes (JSON)', self)
+#act_data_import_font = QtGui.QAction('Import Classes from Font', self)
+# act_data_build_composite = QtGui.QAction(
+#    'Build Classes from References', self)
+#act_data_reset = QtGui.QAction('Reset Font Class Data', self)
+#act_data_write = QtGui.QAction('Write class data to Font', self)
+#
+# self.menu_data.addAction(act_data_open)
+# self.menu_data.addAction(act_data_save)
+#
+# menu.addSeparator()
+#menu.addAction(u'Ascender', lambda: self.setText('=Ascender'))
+#menu.addAction(u'Descender', lambda: self.setText('=Descender'))
+#menu.addAction(u'Caps Height', lambda: self.setText('=CapsHeight'))
+#menu.addAction(u'X Height', lambda: self.setText('=XHeight'))
+
 dialog = dlg_exportFontsInFolder()
