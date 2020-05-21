@@ -50,3 +50,8 @@ Open a font and run the scripts from the _Scripts_ menu.
 
 As a separate functionality, you can also open a font, run the script and click **Save NAM file**. This will contain the Unicode-to-glyphname mapping of the current font.
 
+### TW Anchors > Select Glyphs by Anchor
+
+![](./docs/img/Select_Glyphs_by_Anchor.png)
+
+While in Font window, run the script (if your font is large, it may take a while for the dialog to show up). The combo box shows all anchors found in all glyphs in all masters — pick one or type your own. Choose whether to search for a given anchor in the current master or all masters with the checkbox. Click Search, and all glyphs that include the anchor will be selected, plus their names will be printed to the Output panel, `/`-separated.
