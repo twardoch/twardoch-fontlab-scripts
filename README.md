@@ -12,12 +12,11 @@
 
 1. Unzip the downloaded file.
 2. With Finder or File Explorer, go inside the `Script` subfolder that is inside the unzipped folder.
-3. In another Finder or File Explorer window, go to your FontLab 7 [user data folder](https://help.fontlab.com/fontlab/7/manual/Custom-data-files-and-locations/#user-data-folder). Unless you have picked a custom location in _Preferences > General > User data folder_, it’s:
-   - on macOS: `~/Library/Application Support/FontLab/FontLab 7` where `~` is your home folder
-   - on Windows: `%userprofile%\AppData\Roaming\Fontlab\Fontlab 7` where `%userprofile%` is your home folder
-4. If there is no `Scripts` folder inside your user data folder, create it.
-5. Copy the contents of the unzipped `Scripts` folder into the `Scripts` folder in your user data folder.
-6. Run FontLab 7, or if it’s running, choose _Scripts > Refresh Scripts_
+3. Run FontLab 7, choose _Scripts > Update / Install Scripts_. This will install [TypeRig](https://github.com/kateliev/TypeRig), an extension library for FontLab 7 that is needed for some of the scripts. Restart FontLab after the installation completes. 
+4. In FontLab 7, from the _FontLab 7_ menu (Mac) or _Edit_ menu (Windows), choose _Preferences > General_, and click the _Open user data folder_ button (on the right of _User data_. This will open a Finder or File Explorer window, with your [user data folder](https://help.fontlab.com/fontlab/7/manual/Custom-data-files-and-locations/#user-data-folder) named `FontLab 7`. 
+5. If there is no `Scripts` folder inside the `FontLab 7` user data folder, create it.
+6. Copy the contents of the unzipped `Scripts` folder into the `Scripts` folder in your user data folder.
+7. Run FontLab 7, or if it’s running, choose _Scripts > Refresh Scripts_
 
 **Note:** This is not an official Fontlab Ltd. product. No technical support, no warranty whatsoever — but pull requests are welcome.
 
@@ -55,3 +54,5 @@ As a separate functionality, you can also open a font, run the script and click 
 ![](./docs/img/Select_Glyphs_by_Anchor.png)
 
 While in Font window, run the script (if your font is large, it may take a while for the dialog to show up). The combo box shows all anchors found in all glyphs in all masters — pick one or type your own. Choose whether to search for a given anchor in the current master or all masters with the checkbox. Click Search, and all glyphs that include the anchor will be selected, plus their names will be printed to the Output panel, `/`-separated.
+
+Requires TypeRig.
