@@ -8,7 +8,7 @@
 
 ## Installation
 
-[Download ZIP](https://github.com/twardoch/twardoch-fontlab-scripts/archive/master.zip){ .btn }
+<a class="btn btn-primary js-blob-submit flex-auto mx-3 ml-md-3 mr-md-0 ml-lg-0 mb-3 mb-md-0" href="https://github.com/twardoch/twardoch-fontlab-scripts/archive/master.zip">Download ZIP</a>
 
 1. Unzip the downloaded file.
 2. With Finder or File Explorer, go inside the `Script` subfolder that is inside the unzipped folder.
