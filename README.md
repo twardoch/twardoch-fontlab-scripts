@@ -8,8 +8,7 @@
 
 ## Installation
 
-<!-- Place this tag where you want the button to render. -->
-<a class="github-button" href="https://github.com/twardoch/twardoch-fontlab-scripts/archive/master.zip" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-download" data-size="large" aria-label="Download twardoch/twardoch-fontlab-scripts on GitHub">Download</a>
+### <a class="github-button" href="https://github.com/twardoch/twardoch-fontlab-scripts/archive/master.zip" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-download" data-size="large" aria-label="Download github.com/twardoch/twardoch-fontlab-scripts/archive/master.zip">Download ZIP</a>
 
 <button><a class="btn btn-primary" href="https://github.com/twardoch/twardoch-fontlab-scripts/archive/master.zip">Download ZIP</a></button>
 
