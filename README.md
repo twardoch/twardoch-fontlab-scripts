@@ -8,7 +8,7 @@
 
 ## Installation
 
-<a class="btn btn-primary" href="https://github.com/twardoch/twardoch-fontlab-scripts/archive/master.zip">Download ZIP</a>
+<button><a class="btn btn-primary" href="https://github.com/twardoch/twardoch-fontlab-scripts/archive/master.zip">Download ZIP</a></button>
 
 1. Unzip the downloaded file.
 2. With Finder or File Explorer, go inside the `Script` subfolder that is inside the unzipped folder.
