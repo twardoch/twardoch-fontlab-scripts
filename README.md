@@ -26,7 +26,7 @@ Open a font and run the scripts from the _Scripts_ menu.
 
 ### TW Text > Reverse Text
 
-![](./docs/img/Reverse_Text.gif)
+![](./docs/img/Reverse_Text_.gif)
 
 If you have a Glyph window active and it contains some text, run this to reverse each line (first glyph becomes last and last becomes first). Useful for right-to-left development.
 
