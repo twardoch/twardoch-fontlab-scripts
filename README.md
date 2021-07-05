@@ -12,8 +12,8 @@
 
 1. Unzip the downloaded file.
 2. With Finder or File Explorer, go inside the `Script` subfolder that is inside the unzipped folder.
-3. Run FontLab 7, choose _Scripts > Update / Install Scripts_. This will install [TypeRig](https://github.com/kateliev/TypeRig), an extension library for FontLab 7 that is needed for some of the scripts. Restart FontLab after the installation completes. 
-4. In FontLab 7, from the _FontLab 7_ menu (Mac) or _Edit_ menu (Windows), choose _Preferences > General_, and click the _Open user data folder_ button (on the right of _User data_. This will open a Finder or File Explorer window, with your [user data folder](https://help.fontlab.com/fontlab/7/manual/Custom-data-files-and-locations/#user-data-folder) named `FontLab 7`. 
+3. Run FontLab 7, choose _Scripts > Update / Install Scripts_. This will install [TypeRig](https://github.com/kateliev/TypeRig), an extension library for FontLab 7 that is needed for some of the scripts. Restart FontLab after the installation completes.
+4. In FontLab 7, from the _FontLab 7_ menu (Mac) or _Edit_ menu (Windows), choose _Preferences > General_, and click the _Open user data folder_ button (on the right of _User data_. This will open a Finder or File Explorer window, with your [user data folder](https://help.fontlab.com/fontlab/7/manual/Custom-data-files-and-locations/#user-data-folder) named `FontLab 7`.
 5. If there is no `Scripts` folder inside the `FontLab 7` user data folder, create it.
 6. Copy the contents of the unzipped `Scripts` folder into the `Scripts` folder in your user data folder.
 7. Run FontLab 7, or if it’s running, choose _Scripts > Refresh Scripts_
@@ -25,6 +25,8 @@
 Open a font and run the scripts from the _Scripts_ menu.
 
 ### TW Text > Reverse Text
+
+![](./docs/img/Reverse_Text.gif)
 
 If you have a Glyph window active and it contains some text, run this to reverse each line (first glyph becomes last and last becomes first). Useful for right-to-left development.
 
