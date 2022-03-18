@@ -65,3 +65,25 @@ Requires TypeRig.
 
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+## Other tips
+
+### Change the FontLab UI font
+
+To change the UI font of FontLab to a lighter variant on macOS: 
+
+- Install Apple’s [SF Pro](https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg) font family. 
+- Open **Preferences › General › User data** and click the **Open user data folder** button
+- When the folder opens in Finder, open the `startupScript.py` file in a plain-text editor or create such a file if it does not exist
+- Add this code to the end of the `startupScript.py` file: 
+
+```python
+from PythonQt import QtGui
+qapp = QtGui.QApplication.instance()
+appfont = qapp.font()
+appfont.setFamily("SF Pro")
+appfont.setWeight(QtGui.QFont.Light)
+qapp.setFont(appfont)
+```
+
+- Run FontLab.
